@@ -47,14 +47,14 @@ export function isValid(question: Question, answer: string): boolean {
         SHORT_ANSWER = "short_answer_question",
         MULTIPLE_CHOICE = "multiple_choice_question",
     }
-    if (question.type === QuestionType.SHORT_ANSWER) {
-        // For short answer questions, any answer is valid
-        return true;
-    } else if (question.type === QuestionType.MULTIPLE_CHOICE) {
-        // For multiple choice questions, check if the answer is one of the options
-        return question.options.includes(answer);
+    switch (question.type) {
+        case QuestionType.SHORT_ANSWER:
+            return true; // Any answer is valid for short answers
+        case QuestionType.MULTIPLE_CHOICE:
+            return question.options.includes(answer); // Check if the answer is valid
+        default:
+            return false; // For unexpected question types
     }
-    return false;
 }
 
 /**
