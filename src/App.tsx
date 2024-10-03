@@ -28,5 +28,3 @@ function App(): React.JSX.Element {
         </div>
     );
 }
-
-export default App;
