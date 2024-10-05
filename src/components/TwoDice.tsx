@@ -13,12 +13,21 @@ export function d6(randomValue?: number): number {
 }
 
 export function TwoDice(): React.JSX.Element {
-    const [leftDie, setLeftDie] = useState<number>(d6());
-    const [rightDie, setRightDie] = useState<number>(d6());
+    const [leftDie, setLeftDie] = useState<number | null>(null); // Initialize as null
+    const [rightDie, setRightDie] = useState<number | null>(null); // Initialize as null
 
-    // Determine the result message based on dice values
+    // Roll dice when the component is first interacted with, not on render
+    const handleRollLeft = () => {
+        setLeftDie(d6());
+    };
+
+    const handleRollRight = () => {
+        setRightDie(d6());
+    };
+
+    // Determine the result message based on dice values (only if both are rolled)
     const resultMessage =
-        leftDie === rightDie ?
+        leftDie !== null && rightDie !== null && leftDie === rightDie ?
             leftDie === 1 ?
                 "Lose"
             :   "Win"
@@ -27,24 +36,16 @@ export function TwoDice(): React.JSX.Element {
     return (
         <div>
             <div>
-                <span data-testid="left-die">Left Die: {leftDie}</span>
-                <span data-testid="right-die">Right Die: {rightDie}</span>
+                <span data-testid="left-die">
+                    Left Die: {leftDie ?? "Not Rolled"}
+                </span>
+                <span data-testid="right-die">
+                    Right Die: {rightDie ?? "Not Rolled"}
+                </span>
             </div>
             <div>
-                <Button
-                    onClick={() => {
-                        setLeftDie(d6());
-                    }}
-                >
-                    Roll Left
-                </Button>
-                <Button
-                    onClick={() => {
-                        setRightDie(d6());
-                    }}
-                >
-                    Roll Right
-                </Button>
+                <Button onClick={handleRollLeft}>Roll Left</Button>
+                <Button onClick={handleRollRight}>Roll Right</Button>
             </div>
             {resultMessage && <div>{resultMessage}</div>}
         </div>
