@@ -13,8 +13,8 @@ export function d6(randomValue?: number): number {
 }
 
 export function TwoDice(): React.JSX.Element {
-    const [leftDie, setLeftDie] = useState<number | null>(null); // Initialize as null
-    const [rightDie, setRightDie] = useState<number | null>(null); // Initialize as null
+    const [leftDie, setLeftDie] = useState<number>(1); // Initialize with default value 1
+    const [rightDie, setRightDie] = useState<number>(2); // Initialize with default value 1
 
     // Roll dice when the component is first interacted with, not on render
     const handleRollLeft = () => {
@@ -25,29 +25,25 @@ export function TwoDice(): React.JSX.Element {
         setRightDie(d6());
     };
 
-    // Determine the result message based on dice values (only if both are rolled)
+    // Determine the result message based on dice values
     const resultMessage =
-        leftDie !== null && rightDie !== null && leftDie === rightDie ?
+        leftDie === rightDie ?
             leftDie === 1 ?
                 "Lose"
             :   "Win"
-        :   "";
+        :   "Keep Rolling";
 
     return (
         <div>
             <div>
-                <span data-testid="left-die">
-                    Left Die: {leftDie ?? "Not Rolled"}
-                </span>
-                <span data-testid="right-die">
-                    Right Die: {rightDie ?? "Not Rolled"}
-                </span>
+                <span data-testid="left-die">Left Die: {leftDie}</span>
+                <span data-testid="right-die">Right Die: {rightDie}</span>
             </div>
             <div>
                 <Button onClick={handleRollLeft}>Roll Left</Button>
                 <Button onClick={handleRollRight}>Roll Right</Button>
             </div>
-            {resultMessage && <div>{resultMessage}</div>}
+            <div>{resultMessage}</div>
         </div>
     );
 }
